@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+ENV/
+env/
+.venv/
+
+# Configuración local sensible
+.env
+
+# Pruebas e IDE
+.pytest_cache/
+.vscode/
+.idea/
