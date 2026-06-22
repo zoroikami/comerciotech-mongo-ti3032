@@ -5,7 +5,7 @@ Implementa el CRUD, validaciones en capa Python y control de acceso (RBAC).
 """
 
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pymongo.errors import WriteError, DuplicateKeyError
 from src.conexion import obtener_db
 from src.auth import requiere_rol
@@ -90,7 +90,7 @@ def crear_cliente(cliente_data):
             "comuna": cliente_data["direccion"]["comuna"].strip(),
             "ciudad": cliente_data["direccion"]["ciudad"].strip()
         },
-        "fecha_registro": datetime.utcnow()
+        "fecha_registro": datetime.now(timezone.utc)
     }
 
     try:

@@ -7,7 +7,7 @@ Asignatura: Bases de Datos No Estructuradas (TI3032).
 
 import sys
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Agregar la raíz del proyecto al path por si se ejecuta desde carpetas internas
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -69,7 +69,7 @@ def cargar_datos_demostracion():
                     "comuna": "Las Condes",
                     "ciudad": "Santiago"
                 },
-                "fecha_registro": datetime.utcnow()
+                "fecha_registro": datetime.now(timezone.utc)
             },
             {
                 "rut": "9876543-K",
@@ -82,7 +82,7 @@ def cargar_datos_demostracion():
                     "comuna": "Valparaíso",
                     "ciudad": "Valparaíso"
                 },
-                "fecha_registro": datetime.utcnow()
+                "fecha_registro": datetime.now(timezone.utc)
             }
         ]
         

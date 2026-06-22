@@ -5,7 +5,7 @@ Implementa CRUD completo, validaciones en Python (incluyendo relación cliente y
 """
 
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pymongo.errors import WriteError, DuplicateKeyError
 from src.conexion import obtener_db
 from src.auth import requiere_rol
@@ -151,7 +151,7 @@ def crear_pedido(pedido_data):
     documento = {
         "numero_pedido": pedido_data["numero_pedido"].strip().upper(),
         "cliente_rut": pedido_data["cliente_rut"].strip(),
-        "fecha_pedido": datetime.utcnow(),
+        "fecha_pedido": datetime.now(timezone.utc),
         "estado": pedido_data["estado"].strip(),
         "items": pedido_data["items"],
         "total": pedido_data["total"],
