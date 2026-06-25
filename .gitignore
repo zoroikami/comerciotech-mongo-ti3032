@@ -16,3 +16,6 @@ env/
 .pytest_cache/
 .vscode/
 .idea/
+ 
+# Word documents (converted to markdown)
+*.docx
