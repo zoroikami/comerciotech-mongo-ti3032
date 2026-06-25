@@ -6,8 +6,11 @@ Gestiona el ciclo de vida de MongoClient utilizando variables de entorno.
 
 import os
 import logging
+# pyrefly: ignore [missing-import]
 from pymongo import MongoClient
+# pyrefly: ignore [missing-import]
 from pymongo.errors import ConnectionFailure, OperationFailure, ConfigurationError
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 # Configurar el registro de logs básico
