@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComercioTech - Panel de Control Premium</title>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="dark-theme">
+    
+    <!-- Background glowing decorative spheres -->
+    <div class="glow-bg">
+        <div class="sphere sphere-1"></div>
+        <div class="sphere sphere-2"></div>
+        <div class="sphere sphere-3"></div>
+    </div>
+
+    <!-- TOAST SYSTEM FOR NOTIFICATIONS -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-container" class="login-wrapper">
+        <div class="login-card glassmorphism animate-fade-in">
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-cubes-stacked"></i>
+                </div>
+                <h1>ComercioTech</h1>
+                <p>Plataforma de Base de Datos No Estructuradas</p>
+            </div>
+            
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="login-username"><i class="fa-regular fa-user"></i> Usuario</label>
+                    <input type="text" id="login-username" placeholder="Ingrese su usuario (ej: admin, vendedor)" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password"><i class="fa-solid fa-lock"></i> Contraseña</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="login-password" placeholder="Ingrese su contraseña" required autocomplete="current-password">
+                        <button type="button" id="toggle-password" class="btn-toggle-pwd">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="submit" id="btn-login" class="btn btn-primary btn-block">
+                    Iniciar Sesión <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Evaluación Sumativa 4 • Harold Concha – Keoni Vergara</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP SCREEN (Dashboard) -->
+    <div id="app-container" class="app-layout hidden">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar glassmorphism">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-cubes-stacked logo-accent"></i>
+                <span>ComercioTech</span>
+            </div>
+            
+            <div class="user-profile-widget">
+                <div class="user-avatar">
+                    <i class="fa-solid fa-user-gear" id="user-avatar-icon"></i>
+                </div>
+                <div class="user-info">
+                    <h3 id="current-user-name">Administrador</h3>
+                    <span id="current-user-role-badge" class="role-badge role-admin">admin</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <button class="nav-btn active" data-tab="tab-dashboard">
+                            <i class="fa-solid fa-chart-pie"></i> Inicio
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" data-tab="tab-clientes">
+                            <i class="fa-solid fa-users"></i> Clientes
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" data-tab="tab-productos">
+                            <i class="fa-solid fa-box-open"></i> Productos
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" data-tab="tab-pedidos">
+                            <i class="fa-solid fa-receipt"></i> Pedidos
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button id="btn-logout" class="btn btn-danger btn-logout btn-block">
+                    <i class="fa-solid fa-power-off"></i> Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN MAIN CONTENT CONTAINER -->
+        <main class="main-content">
+            
+            <!-- TOP HEADER -->
+            <header class="content-header glassmorphism">
+                <div class="header-title">
+                    <h2 id="tab-title">Inicio</h2>
+                    <p id="tab-subtitle">Resumen ejecutivo y analíticas comerciales de la base de datos.</p>
+                </div>
+                <div class="header-actions">
+                    <span class="db-status-badge"><span class="status-indicator online"></span> MongoDB Online</span>
+                </div>
+            </header>
+
+            <!-- TAB CONTENT: DASHBOARD -->
+            <section id="tab-dashboard" class="tab-pane active animate-fade-in">
+                <!-- METRIC CARDS -->
+                <div class="metrics-grid">
+                    <div class="metric-card glassmorphism border-glow-purple">
+                        <div class="metric-content">
+                            <span class="metric-label">Ventas Totales</span>
+                            <h2 class="metric-value" id="stat-ventas">$0</h2>
+                        </div>
+                        <div class="metric-icon bg-purple">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card glassmorphism border-glow-blue">
+                        <div class="metric-content">
+                            <span class="metric-label">Clientes Registrados</span>
+                            <h2 class="metric-value" id="stat-clientes">0</h2>
+                        </div>
+                        <div class="metric-icon bg-blue">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card glassmorphism border-glow-cyan">
+                        <div class="metric-content">
+                            <span class="metric-label">Productos Activos</span>
+                            <h2 class="metric-value" id="stat-productos">0</h2>
+                        </div>
+                        <div class="metric-icon bg-cyan">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                    </div>
+
+                    <div class="metric-card glassmorphism border-glow-green">
+                        <div class="metric-content">
+                            <span class="metric-label">Pedidos Emitidos</span>
+                            <h2 class="metric-value" id="stat-pedidos">0</h2>
+                        </div>
+                        <div class="metric-icon bg-green">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DASHBOARD ANALYTICS SECTION -->
+                <div class="dashboard-details-grid">
+                    <!-- TOP SELLING PRODUCTS -->
+                    <div class="details-card glassmorphism">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-star text-accent-yellow"></i> Productos Más Vendidos</h3>
+                            <p>Top 5 productos ordenados por cantidad vendida.</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table id="table-top-products" class="sleek-table">
+                                    <thead>
+                                        <tr>
+                                            <th>SKU</th>
+                                            <th>Producto</th>
+                                            <th class="text-right">Cantidad</th>
+                                            <th class="text-right">Total Recaudado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted">Cargando datos analíticos...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DB CONFIG DETAILS -->
+                    <div class="details-card glassmorphism">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-server text-accent-blue"></i> Configuración del Entorno</h3>
+                            <p>Especificaciones técnicas del despliegue en AWS.</p>
+                        </div>
+                        <div class="card-body env-info-list">
+                            <div class="env-info-item">
+                                <span class="env-label">DBMS</span>
+                                <span class="env-value">MongoDB Community Server</span>
+                            </div>
+                            <div class="env-info-item">
+                                <span class="env-label">Librería Conexión</span>
+                                <span class="env-value">PyMongo 4.6+</span>
+                            </div>
+                            <div class="env-info-item">
+                                <span class="env-label">Servidor Cloud</span>
+                                <span class="env-value">AWS EC2 (Ubuntu 24.04 LTS)</span>
+                            </div>
+                            <div class="env-info-item">
+                                <span class="env-label">Seguridad de Acceso</span>
+                                <span class="env-value">RBAC Integrado en Capa API</span>
+                            </div>
+                            <div class="env-info-item">
+                                <span class="env-label">Seguridad de Datos</span>
+                                <span class="env-value">Cifrado TLS (Tránsito) + AES (Reposo)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: CLIENTES -->
+            <section id="tab-clientes" class="tab-pane hidden animate-fade-in">
+                <div class="actions-bar">
+                    <div class="search-box glassmorphism">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-clientes" placeholder="Buscar cliente por RUT o Nombre...">
+                    </div>
+                    <button id="btn-add-cliente" class="btn btn-primary">
+                        <i class="fa-solid fa-user-plus"></i> Registrar Cliente
+                    </button>
+                </div>
+                
+                <div class="content-card glassmorphism">
+                    <div class="table-container">
+                        <table id="table-clientes" class="sleek-table">
+                            <thead>
+                                <tr>
+                                    <th>RUT</th>
+                                    <th>Nombre completo</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Dirección</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">Cargando listado de clientes...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: PRODUCTOS -->
+            <section id="tab-productos" class="tab-pane hidden animate-fade-in">
+                <div class="actions-bar">
+                    <div class="search-box glassmorphism">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-productos" placeholder="Buscar producto por SKU, Nombre o Categoría...">
+                    </div>
+                    <button id="btn-add-producto" class="btn btn-primary">
+                        <i class="fa-solid fa-plus"></i> Registrar Producto
+                    </button>
+                </div>
+                
+                <div class="content-card glassmorphism">
+                    <div class="table-container">
+                        <table id="table-productos" class="sleek-table">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Categoría</th>
+                                    <th class="text-right">Precio</th>
+                                    <th class="text-right">Stock</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">Cargando catálogo de productos...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: PEDIDOS -->
+            <section id="tab-pedidos" class="tab-pane hidden animate-fade-in">
+                <div class="actions-bar">
+                    <div class="search-box glassmorphism">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-pedidos" placeholder="Buscar pedidos por N° Pedido o RUT Cliente...">
+                    </div>
+                    <button id="btn-add-pedido" class="btn btn-primary">
+                        <i class="fa-solid fa-receipt"></i> Crear Nuevo Pedido
+                    </button>
+                </div>
+                
+                <div class="content-card glassmorphism">
+                    <div class="table-container">
+                        <table id="table-pedidos" class="sleek-table">
+                            <thead>
+                                <tr>
+                                    <th>N° Pedido</th>
+                                    <th>Cliente (RUT)</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th class="text-right">Total</th>
+                                    <th>Detalles</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">Cargando listado de pedidos...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ==========================================
+         MODALS FOR FORMS
+         ========================================== -->
+
+    <!-- CLIENTE MODAL (ADD & EDIT) -->
+    <div id="modal-cliente" class="modal-overlay hidden">
+        <div class="modal-card glassmorphism animate-scale-up">
+            <div class="modal-header">
+                <h3 id="modal-cliente-title">Registrar Nuevo Cliente</h3>
+                <button type="button" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-cliente" class="modal-form">
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="cli-rut">RUT <span class="required">*</span></label>
+                        <input type="text" id="cli-rut" placeholder="12345678-9" required>
+                        <span class="input-hint">Sin puntos y con guión</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="cli-nombre">Nombre completo <span class="required">*</span></label>
+                        <input type="text" id="cli-nombre" placeholder="Juan Pérez" required>
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="cli-email">Correo Electrónico <span class="required">*</span></label>
+                        <input type="email" id="cli-email" placeholder="juan@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cli-telefono">Teléfono <span class="required">*</span></label>
+                        <input type="text" id="cli-telefono" placeholder="+56912345678" required>
+                    </div>
+                </div>
+                
+                <div class="form-section-title">Dirección de Despacho</div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="cli-calle">Calle <span class="required">*</span></label>
+                        <input type="text" id="cli-calle" placeholder="Av. Providencia" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cli-numero">Número <span class="required">*</span></label>
+                        <input type="text" id="cli-numero" placeholder="1540" required>
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="cli-comuna">Comuna <span class="required">*</span></label>
+                        <input type="text" id="cli-comuna" placeholder="Providencia" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cli-ciudad">Ciudad <span class="required">*</span></label>
+                        <input type="text" id="cli-ciudad" placeholder="Santiago" required>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRODUCTO MODAL (ADD & EDIT) -->
+    <div id="modal-producto" class="modal-overlay hidden">
+        <div class="modal-card glassmorphism animate-scale-up">
+            <div class="modal-header">
+                <h3 id="modal-producto-title">Registrar Nuevo Producto</h3>
+                <button type="button" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-producto" class="modal-form">
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="prod-sku">SKU <span class="required">*</span></label>
+                        <input type="text" id="prod-sku" placeholder="LAP-HP-15" required>
+                        <span class="input-hint">Código único de inventario</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-nombre">Nombre de Producto <span class="required">*</span></label>
+                        <input type="text" id="prod-nombre" placeholder="Notebook HP Pavilion" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="prod-descripcion">Descripción</label>
+                    <textarea id="prod-descripcion" placeholder="Detalle del producto, especificaciones, etc." rows="3"></textarea>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="prod-categoria">Categoría <span class="required">*</span></label>
+                        <input type="text" id="prod-categoria" placeholder="Computación" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-precio">Precio ($) <span class="required">*</span></label>
+                        <input type="number" id="prod-precio" min="0" placeholder="599000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-stock">Stock Inicial <span class="required">*</span></label>
+                        <input type="number" id="prod-stock" min="0" placeholder="10" required>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PEDIDO MODAL (ADD NEW ORDER) -->
+    <div id="modal-pedido" class="modal-overlay hidden">
+        <div class="modal-card glassmorphism large animate-scale-up">
+            <div class="modal-header">
+                <h3>Crear Nuevo Pedido</h3>
+                <button type="button" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-pedido" class="modal-form">
+                <div class="form-section-title">Información General</div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="ped-cliente">Seleccionar Cliente <span class="required">*</span></label>
+                        <select id="ped-cliente" required>
+                            <option value="">Seleccione un cliente...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ped-numero">Número de Pedido <span class="required">*</span></label>
+                        <input type="text" id="ped-numero" placeholder="PED-10001" required>
+                    </div>
+                </div>
+                
+                <!-- ITEMS SELECTION SYSTEM -->
+                <div class="form-section-title">Ítems del Pedido</div>
+                <div class="item-selector-box glassmorphism">
+                    <div class="form-row-3 flex-grow-1">
+                        <div class="form-group">
+                            <label for="ped-add-item-sku">Producto</label>
+                            <select id="ped-add-item-sku">
+                                <option value="">Seleccione producto para añadir...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ped-add-item-cantidad">Cantidad</label>
+                            <input type="number" id="ped-add-item-cantidad" min="1" value="1">
+                        </div>
+                        <div class="form-group align-self-end">
+                            <button type="button" id="btn-add-item-to-list" class="btn btn-cyan btn-block">
+                                <i class="fa-solid fa-plus"></i> Añadir Ítem
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container margin-y">
+                    <table id="table-pedido-items-selected" class="sleek-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Producto</th>
+                                <th class="text-right">Cantidad</th>
+                                <th class="text-right">Precio Unitario</th>
+                                <th class="text-right">Subtotal</th>
+                                <th class="text-center">Quitar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="empty-row-placeholder">
+                                <td colspan="6" class="text-center text-muted">Aún no se han añadido ítems a este pedido.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TOTAL AND ADDRESS -->
+                <div class="form-row-2 border-top padding-top">
+                    <div class="form-group">
+                        <label>Dirección de Envio (Autocompletado del Cliente)</label>
+                        <div id="ped-direccion-envio-preview" class="address-preview-box">
+                            No se ha seleccionado ningún cliente.
+                        </div>
+                    </div>
+                    <div class="order-total-display">
+                        <span class="total-label">Total del Pedido:</span>
+                        <span class="total-value" id="ped-total-display">$0</span>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- UPDATE ORDER STATUS MODAL -->
+    <div id="modal-pedido-status" class="modal-overlay hidden">
+        <div class="modal-card glassmorphism animate-scale-up">
+            <div class="modal-header">
+                <h3>Actualizar Estado del Pedido</h3>
+                <button type="button" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-pedido-status" class="modal-form">
+                <input type="hidden" id="status-pedido-num">
+                <div class="form-group">
+                    <label for="status-pedido-select">Seleccione Nuevo Estado</label>
+                    <select id="status-pedido-select" required>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="pagado">Pagado</option>
+                        <option value="despachado">Despachado</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                    <p class="input-hint text-warning margin-top-sm" id="cancel-warning-msg" style="display: none;">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Al cambiar a "Cancelado", los ítems se reintegrarán automáticamente al stock general.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar Estado</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EXPAND ORDER DETAILS MODAL -->
+    <div id="modal-pedido-details" class="modal-overlay hidden">
+        <div class="modal-card glassmorphism large animate-scale-up">
+            <div class="modal-header">
+                <h3 id="details-pedido-title">Detalles del Pedido PED-10001</h3>
+                <button type="button" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="details-grid-2">
+                    <div class="details-section">
+                        <h4>Información del Cliente</h4>
+                        <p><strong>RUT:</strong> <span id="details-cli-rut">-</span></p>
+                        <p><strong>Nombre:</strong> <span id="details-cli-nombre">-</span></p>
+                        <p><strong>Despacho en:</strong> <span id="details-cli-direccion">-</span></p>
+                    </div>
+                    <div class="details-section">
+                        <h4>Información de Venta</h4>
+                        <p><strong>Fecha Compra:</strong> <span id="details-ped-fecha">-</span></p>
+                        <p><strong>Estado Actual:</strong> <span id="details-ped-estado" class="status-badge status-pending">pendiente</span></p>
+                        <p><strong>Total Facturado:</strong> <span id="details-ped-total" class="text-accent-violet font-semibold">$0</span></p>
+                    </div>
+                </div>
+                
+                <h4 class="margin-top">Detalle de Ítems</h4>
+                <div class="table-container">
+                    <table id="table-pedido-items-details" class="sleek-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Producto</th>
+                                <th class="text-right">Cantidad</th>
+                                <th class="text-right">Precio Unitario</th>
+                                <th class="text-right">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-close-modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRM DELETE DIALOG -->
+    <div id="modal-delete" class="modal-overlay hidden">
+        <div class="modal-card glassmorphism animate-scale-up">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+                <button type="button" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="delete-warning-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <p>¿Está seguro que desea eliminar este registro?</p>
+                <p class="text-muted text-sm margin-top-sm">Esta acción es irreversible y se reflejará permanentemente en la base de datos MongoDB.</p>
+            </div>
+            <div class="modal-footer justify-center">
+                <button type="button" class="btn btn-secondary btn-close-modal">Cancelar</button>
+                <button type="button" id="btn-confirm-delete" class="btn btn-danger">Eliminar Registro</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom JS Application Logic -->
+    <script src="js/app.js"></script>
+</body>
+</html>
