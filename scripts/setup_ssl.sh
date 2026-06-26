@@ -42,6 +42,13 @@ elif [ "$OS" = "ubuntu" ] || [ "$OS" = "debian" ]; then
     echo -e "[INFO] Instalando dependencias en Ubuntu..."
     sudo apt update
     sudo apt install -y nginx certbot python3-certbot-nginx
+    
+    # Detener Apache si está activo para liberar el puerto 80
+    if systemctl is-active --quiet apache2; then
+        echo -e "[INFO] Apache (apache2) está activo en el puerto 80. Deteniendo y desactivando para dar espacio a Nginx..."
+        sudo systemctl stop apache2
+        sudo systemctl disable apache2
+    fi
 else
     echo -e "${RED}[ERROR] Sistema operativo no soportado por este script automatizado. Soporte solo para Amazon Linux y Ubuntu.${NC}"
     exit 1
@@ -50,6 +57,7 @@ fi
 # 3. Configurar Nginx como Proxy Inverso
 echo -e "[INFO] Configurando Nginx para comerciotech.qd.je..."
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 NGINX_CONF_SOURCE="$SCRIPT_DIR/nginx_comerciotech.conf"
 
 if [ ! -f "$NGINX_CONF_SOURCE" ]; then
@@ -78,6 +86,14 @@ else
     exit 1
 fi
 
+# 3.5 Crear Entorno Virtual e Instalar Dependencias si no existe
+if [ ! -d "$REPO_DIR/venv" ]; then
+    echo -e "[INFO] No se encontró el entorno virtual. Creándolo e instalando dependencias..."
+    python3 -m venv "$REPO_DIR/venv"
+    "$REPO_DIR/venv/bin/pip" install --upgrade pip
+    "$REPO_DIR/venv/bin/pip" install -r "$REPO_DIR/requirements.txt"
+fi
+
 # 4. Configurar e iniciar el Servicio Systemd de la Aplicación Flask
 echo -e "[INFO] Configurando el servicio de la aplicación (systemd)..."
 SERVICE_SOURCE="$SCRIPT_DIR/comerciotech.service"
@@ -87,12 +103,23 @@ if [ ! -f "$SERVICE_SOURCE" ]; then
     exit 1
 fi
 
-# Adaptar el usuario de ejecución en el servicio systemd según el OS
-if [ "$OS" = "ubuntu" ]; then
-    sed -i 's/User=ec2-user/User=ubuntu/g' "$SERVICE_SOURCE"
-fi
+# Obtener usuario propietario de la carpeta y la ruta absoluta del repositorio para reemplazar dinámicamente
+REAL_USER=$(stat -c '%U' "$REPO_DIR")
+echo -e "[INFO] Detectado usuario propietario del repositorio: ${GREEN}$REAL_USER${NC}"
+echo -e "[INFO] Detectada ruta del repositorio: ${GREEN}$REPO_DIR${NC}"
 
-sudo cp "$SERVICE_SOURCE" /etc/systemd/system/comerciotech.service
+# Copiar servicio a archivo temporal para modificarlo sin alterar el repositorio
+TEMP_SERVICE=$(mktemp)
+cp "$SERVICE_SOURCE" "$TEMP_SERVICE"
+
+sed -i "s|User=ec2-user|User=$REAL_USER|g" "$TEMP_SERVICE"
+sed -i "s|WorkingDirectory=/home/ec2-user/nohinohey|WorkingDirectory=$REPO_DIR|g" "$TEMP_SERVICE"
+sed -i "s|ExecStart=/home/ec2-user/nohinohey/venv/bin/python src/app.py|ExecStart=$REPO_DIR/venv/bin/python src/app.py|g" "$TEMP_SERVICE"
+sed -i "s|EnvironmentFile=/home/ec2-user/nohinohey/.env|EnvironmentFile=$REPO_DIR/.env|g" "$TEMP_SERVICE"
+
+sudo cp "$TEMP_SERVICE" /etc/systemd/system/comerciotech.service
+rm -f "$TEMP_SERVICE"
+
 sudo systemctl daemon-reload
 sudo systemctl restart comerciotech
 sudo systemctl enable comerciotech
@@ -113,3 +140,4 @@ else
     echo -e "${RED}[ADVERTENCIA] Certbot no pudo completar el registro SSL.${NC}"
     echo -e "Asegúrate de que el DNS de 'comerciotech.qd.je' apunte correctamente a la IP pública de esta instancia."
 fi
+
