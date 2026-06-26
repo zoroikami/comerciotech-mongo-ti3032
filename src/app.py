@@ -22,6 +22,33 @@ from src.dao import clientes_dao, productos_dao, pedidos_dao
 app = Flask(__name__, static_folder='static', static_url_path='')
 CORS(app)  # Habilitar CORS para desarrollo local
 
+# Inicializar usuarios demo en la base de datos si la colección está vacía
+def inicializar_usuarios_demo():
+    try:
+        db = obtener_db()
+        if db.usuarios.count_documents({}) == 0:
+            from src.auth import hash_password
+            db.usuarios.insert_many([
+                {
+                    "username": "admin",
+                    "password": hash_password("admin123"),
+                    "rol": "admin",
+                    "nombre": "Administrador General"
+                },
+                {
+                    "username": "vendedor",
+                    "password": hash_password("vende123"),
+                    "rol": "vendedor",
+                    "nombre": "Vendedor de Turno"
+                }
+            ])
+            print("[INFO] Usuarios de demostración creados exitosamente en MongoDB.")
+    except Exception as e:
+        print(f"[ADVERTENCIA] No se pudo inicializar usuarios de demostración: {str(e)}")
+
+# Ejecutar inicialización al cargar la aplicación
+inicializar_usuarios_demo()
+
 def serialize_doc(doc):
     """
     Serializa recursivamente objetos de MongoDB (ObjectId, datetime) 
