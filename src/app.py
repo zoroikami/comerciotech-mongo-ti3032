@@ -22,10 +22,12 @@ from src.dao import clientes_dao, productos_dao, pedidos_dao
 app = Flask(__name__, static_folder='static', static_url_path='')
 CORS(app)  # Habilitar CORS para desarrollo local
 
-# Inicializar usuarios demo en la base de datos si la colección está vacía
-def inicializar_usuarios_demo():
+# Inicializar base de datos con datos de demostración
+def inicializar_datos_demo():
     try:
         db = obtener_db()
+        
+        # 1. Inicializar usuarios
         if db.usuarios.count_documents({}) == 0:
             from src.auth import hash_password
             db.usuarios.insert_many([
@@ -43,11 +45,76 @@ def inicializar_usuarios_demo():
                 }
             ])
             print("[INFO] Usuarios de demostración creados exitosamente en MongoDB.")
+            
+        # 2. Inicializar clientes
+        if db.clientes.count_documents({}) == 0:
+            clientes_demo = [
+                {
+                    "rut": "12345678-9",
+                    "nombre": "Juan Pérez González",
+                    "email": "juan.perez@email.com",
+                    "telefono": "+56911112222",
+                    "direccion": {
+                        "calle": "Av. Apoquindo",
+                        "numero": "4500",
+                        "comuna": "Las Condes",
+                        "ciudad": "Santiago"
+                    },
+                    "fecha_registro": datetime.now(timezone.utc)
+                },
+                {
+                    "rut": "9876543-K",
+                    "nombre": "María Loreto Silva",
+                    "email": "maria.silva@email.com",
+                    "telefono": "+56933334444",
+                    "direccion": {
+                        "calle": "Calle Prat",
+                        "numero": "120",
+                        "comuna": "Valparaíso",
+                        "ciudad": "Valparaíso"
+                    },
+                    "fecha_registro": datetime.now(timezone.utc)
+                }
+            ]
+            db.clientes.insert_many(clientes_demo)
+            print("[INFO] Clientes de demostración creados en MongoDB.")
+            
+        # 3. Inicializar productos
+        if db.productos.count_documents({}) == 0:
+            productos_demo = [
+                {
+                    "sku": "LAP-DELL-15",
+                    "nombre": "Notebook Dell Inspiron 15",
+                    "descripcion": "Intel Core i7, 16GB RAM, 512GB SSD",
+                    "precio": 850000,
+                    "stock": 10,
+                    "categoria": "Computación"
+                },
+                {
+                    "sku": "MOU-LOGI-M180",
+                    "nombre": "Mouse Logitech Inalámbrico M180",
+                    "descripcion": "Mouse óptico ergonómico",
+                    "precio": 15000,
+                    "stock": 50,
+                    "categoria": "Accesorios"
+                },
+                {
+                    "sku": "MON-SAMS-24",
+                    "nombre": "Monitor Samsung 24 pulgadas FHD",
+                    "descripcion": "Frecuencia 75Hz, Panel IPS, HDMI",
+                    "precio": 120000,
+                    "stock": 15,
+                    "categoria": "Pantallas"
+                }
+            ]
+            db.productos.insert_many(productos_demo)
+            print("[INFO] Productos de demostración creados en MongoDB.")
+            
     except Exception as e:
-        print(f"[ADVERTENCIA] No se pudo inicializar usuarios de demostración: {str(e)}")
+        print(f"[ADVERTENCIA] No se pudo inicializar base de datos de demostración: {str(e)}")
 
 # Ejecutar inicialización al cargar la aplicación
-inicializar_usuarios_demo()
+inicializar_datos_demo()
 
 def serialize_doc(doc):
     """
