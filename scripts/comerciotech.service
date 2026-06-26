@@ -1,0 +1,24 @@
+[Unit]
+Description=Servicio Web Flask para ComercioTech
+After=network.target
+
+[Service]
+# Asumiendo 'ec2-user' para Amazon Linux 2023. Cambiar a 'ubuntu' si se usa Ubuntu Server.
+User=ec2-user
+WorkingDirectory=/home/ec2-user/nohinohey
+ExecStart=/home/ec2-user/nohinohey/venv/bin/python src/app.py
+
+# Carga de variables de entorno desde el archivo .env
+EnvironmentFile=/home/ec2-user/nohinohey/.env
+
+# Políticas de reinicio ante fallos
+Restart=always
+RestartSec=5
+
+# Redirección de logs a syslog (se pueden ver con journalctl -u comerciotech)
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=comerciotech
+
+[Install]
+WantedBy=multi-user.target

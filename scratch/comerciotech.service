@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn instance to serve ComercioTech Web App
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/comerciotech
+ExecStart=/home/ubuntu/comerciotech/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 src.app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
