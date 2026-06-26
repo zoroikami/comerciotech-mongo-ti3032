@@ -185,6 +185,16 @@ Inicie la consola interactiva con el comando:
 python src/main.py
 ```
 
+### Ejecutar Aplicación Web (Panel de Control)
+Inicie el servidor web de Flask para servir tanto la interfaz gráfica interactiva en modo oscuro como la API REST:
+```bash
+python src/app.py
+```
+Por defecto, la aplicación estará disponible de forma local en:
+- **URL**: http://127.0.0.1:5000/
+
+El servidor web expone endpoints REST bajo el prefijo `/api/` y sirve los archivos HTML/CSS/JS de la interfaz gráfica de usuario desde `src/static/`.
+
 #### Cuentas de Acceso Demostrativas por Defecto:
 Al arrancar, si la base de datos no tiene credenciales, el sistema crea dos usuarios de prueba en la colección `usuarios`:
 1. **Administrador**:
