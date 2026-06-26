@@ -11,9 +11,21 @@ db = db.getSiblingDB('comerciotech');
 print("Iniciando configuración de seguridad y roles en la base de datos...");
 
 // 1. Limpieza de usuarios y roles anteriores (Opcional, para reprocesabilidad)
-db.dropUser("comerciotech_admin");
-db.dropUser("comerciotech_vendedor");
-db.dropRole("roleVendedor");
+try {
+  db.dropUser("comerciotech_admin");
+} catch (e) {
+  // Ignorar si el usuario no existe
+}
+try {
+  db.dropUser("comerciotech_vendedor");
+} catch (e) {
+  // Ignorar si el usuario no existe
+}
+try {
+  db.dropRole("roleVendedor");
+} catch (e) {
+  // Ignorar si el rol no existe
+}
 
 // 2. Creación del Rol de Negocio: roleVendedor
 // Este rol permite:
