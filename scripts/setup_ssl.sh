@@ -130,8 +130,8 @@ echo -e "${GREEN}[ÉXITO] Servicio systemd 'comerciotech' configurado e iniciado
 echo -e "[INFO] Iniciando el proceso de obtención de certificado SSL con Certbot..."
 echo -e "${GREEN}Por favor, introduce tu correo electrónico y acepta los términos cuando se te solicite.${NC}"
 
-# Ejecución interactiva de Certbot para permitir al estudiante ingresar su correo
-sudo certbot --nginx -d comerciotech.qd.je
+# Ejecución de Certbot de manera no interactiva para automatización completa
+sudo certbot --nginx -d comerciotech.qd.je --non-interactive --agree-tos -m keonissjskr@gmail.com --no-eff-email
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}=== CONFIGURACIÓN COMPLETADA CON ÉXITO ===${NC}"
