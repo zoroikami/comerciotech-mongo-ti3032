@@ -218,9 +218,11 @@ function hexToRgb(hex) {
   return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
 }
 
+const DEFAULT_GRID_MUL = [2, 1];
+
 export default function FaultyTerminal({
   scale = 1,
-  gridMul = [2, 1],
+  gridMul = DEFAULT_GRID_MUL,
   digitSize = 1.5,
   timeScale = 0.3,
   pause = false,
