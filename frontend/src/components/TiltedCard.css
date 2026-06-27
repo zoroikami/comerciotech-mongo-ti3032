@@ -1,0 +1,14 @@
+.tilt-card-container {
+  perspective: 1000px;
+  width: 100%;
+}
+
+.tilt-card {
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tilt-card-inner {
+  transform: translateZ(20px);
+}
