@@ -1,38 +1,95 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@theme {
+  --animate-aurora-bg: aurora-bg 60s linear infinite;
+
+  @keyframes aurora-bg {
+    0% {
+      background-position: 50% 50%, 50% 50%;
+    }
+    50% {
+      background-position: 300% 50%, 200% 50%;
+    }
+    100% {
+      background-position: 50% 50%, 50% 50%;
+    }
+  }
+}
+
+@custom-variant dark (&:is(.dark *));
+
 /* ==========================================================================
    ComercioTech CSS - Premium Glassmorphic Dark-Mode Design System
    ========================================================================== */
 
+
 /* 1. Global Reset & Variables */
 :root {
-    --bg-dark: #090b11;
-    --surface-glass: rgba(18, 22, 33, 0.65);
-    --surface-glass-hover: rgba(26, 32, 48, 0.8);
+    --bg-dark: #050505;
+    --surface-glass: rgba(18, 18, 18, 0.7);
+    --surface-glass-hover: rgba(30, 30, 30, 0.85);
     --border-glass: rgba(255, 255, 255, 0.08);
-    --border-glass-focus: rgba(157, 78, 221, 0.5);
-    
+    --border-glass-focus: rgba(0, 237, 100, 0.6);
     --text-primary: #f3f4f6;
+    --stripe-color: rgba(255, 255, 255, 0.08);
+
     --text-secondary: #9ca3af;
     --text-muted: #6b7280;
-    
+
     /* Neon Accents */
-    --accent-purple: #9d4ede;
-    --accent-purple-glow: rgba(157, 78, 221, 0.4);
-    --accent-blue: #3a86f0;
-    --accent-blue-glow: rgba(58, 134, 240, 0.4);
-    --accent-cyan: #06d6a0;
-    --accent-cyan-glow: rgba(6, 214, 160, 0.4);
-    --accent-green: #2ec4b6;
-    --accent-green-glow: rgba(46, 196, 182, 0.4);
+    --accent-purple: #00ed64;
+    --accent-purple-glow: rgba(0, 237, 100, 0.35);
+    --accent-blue: #116149;
+    --accent-blue-glow: rgba(17, 97, 73, 0.35);
+    --accent-cyan: #00ed64;
+    --accent-cyan-glow: rgba(0, 237, 100, 0.35);
+    --accent-green: #00ed64;
+    --accent-green-glow: rgba(0, 237, 100, 0.35);
     --accent-yellow: #ffb703;
-    
+
     --danger: #ef4444;
     --danger-glow: rgba(239, 68, 68, 0.4);
-    
+
     --font-primary: 'Inter', sans-serif;
     --font-heading: 'Outfit', sans-serif;
-    
+
     --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
 }
 
 * {
@@ -168,13 +225,13 @@ h1, h2, h3, h4 {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--accent-purple) 0%, #7b2cbf 100%);
+    background: linear-gradient(135deg, var(--accent-purple) 0%, #116149 100%);
     color: white;
     box-shadow: 0 4px 15px var(--accent-purple-glow);
 }
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(157, 78, 221, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 237, 100, 0.5);
 }
 
 .btn-cyan {
@@ -258,6 +315,36 @@ select option {
 
 .required {
     color: var(--danger);
+}
+
+/* Custom resets for SmoothInput (skiper-ui) component integration */
+.bg-muted2 {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: 10px !important;
+    padding: 10px 16px !important;
+    display: flex;
+    align-items: center;
+    transition: var(--transition-fast) !important;
+}
+
+.bg-muted2:focus-within {
+    border-color: var(--accent-purple) !important;
+    box-shadow: 0 0 10px var(--accent-purple-glow) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.bg-muted2 input {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    color: var(--text-primary) !important;
+    font-size: 14px !important;
+    font-family: var(--font-primary) !important;
 }
 
 /* 8. Login Card Container */
@@ -429,7 +516,6 @@ select option {
 .sidebar-nav li {
     margin-bottom: 10px;
 }
-
 .nav-btn {
     width: 100%;
     display: flex;
@@ -446,6 +532,26 @@ select option {
     cursor: pointer;
     text-align: left;
     transition: var(--transition-fast);
+    position: relative;
+}
+
+.nav-btn::before {
+    pointer-events: none;
+    position: absolute;
+    left: 50px;
+    bottom: 8px;
+    height: 1px;
+    width: calc(100% - 70px);
+    background-color: var(--accent-purple);
+    content: '';
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-btn:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
 }
 
 .nav-btn:hover {
@@ -455,7 +561,7 @@ select option {
 
 .nav-btn.active {
     color: white;
-    background: rgba(157, 78, 221, 0.15);
+    background: rgba(0, 237, 100, 0.12);
     border-left: 3px solid var(--accent-purple);
     font-weight: 600;
 }
@@ -1024,12 +1130,102 @@ select option {
     .app-layout {
         grid-template-columns: 1fr;
     }
-    
+
     .sidebar {
         display: none; /* In complex webapps, we'd add a toggle. Simple hidden for now */
     }
-    
+
     .dashboard-details-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Geist Variable', sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+.dark {
+    --stripe-color: rgba(0, 0, 0, 0.35);
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
     }
 }

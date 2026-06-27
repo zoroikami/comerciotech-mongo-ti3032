@@ -8,9 +8,13 @@ import ShinyText from './components/ShinyText';
 import CountUp from './components/CountUp';
 import RippleButton from './components/RippleButton';
 import Toast from './components/Toast';
+import AnimatedButton from './components/ui/animated-button';
+import { SmoothInput } from './components/ui/skiper-ui/skiper106';
+import ElasticStack from './components/ui/elastic-stack';
+import LiquidMetalButton from './components/ui/liquid-metal';
+import FaultyTerminal from './components/ui/FaultyTerminal';
 
 export default function App() {
-  // 1. Application State
   const [currentUser, setCurrentUser] = useState(null);
   const [activeTab, setActiveTab] = useState('tab-dashboard');
   const [toasts, setToasts] = useState([]);
@@ -532,7 +536,20 @@ export default function App() {
   if (!currentUser) {
     return (
       <>
-        <Aurora />
+        <div className="fixed inset-0 z-[-1] pointer-events-none">
+          <FaultyTerminal 
+            tint="#00684a" 
+            brightness={1.0}
+            curvature={0.15}
+            scanlineIntensity={0.25}
+            flickerAmount={0.4}
+            glitchAmount={0.3}
+            noiseAmp={0.05}
+            chromaticAberration={2.0}
+            mouseReact={true}
+            mouseStrength={0.15}
+          />
+        </div>
         
         {/* Toasts overlay */}
         <div className="toast-container">
@@ -564,7 +581,7 @@ export default function App() {
             <form onSubmit={handleLoginSubmit} className="login-form">
               <div className="form-group">
                 <label htmlFor="login-username"><i className="fa-regular fa-user"></i> Usuario</label>
-                <input
+                <SmoothInput
                   type="text"
                   id="login-username"
                   placeholder="Ingrese su usuario (ej: admin, vendedor)"
@@ -577,7 +594,7 @@ export default function App() {
               <div className="form-group">
                 <label htmlFor="login-password"><i className="fa-solid fa-lock"></i> Contraseña</label>
                 <div className="password-input-wrapper">
-                  <input
+                  <SmoothInput
                     type={showPassword ? 'text' : 'password'}
                     id="login-password"
                     placeholder="Ingrese su contraseña"
@@ -590,19 +607,27 @@ export default function App() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="btn-toggle-pwd"
+                    style={{ zIndex: 20 }}
                   >
                     <i className={showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'}></i>
                   </button>
                 </div>
               </div>
               
-              <RippleButton type="submit" className="btn-primary btn-block" disabled={isLoggingIn}>
-                {isLoggingIn ? (
-                  <>Verificando... <i className="fa-solid fa-spinner fa-spin"></i></>
-                ) : (
-                  <>Iniciar Sesión <i className="fa-solid fa-arrow-right-to-bracket"></i></>
-                )}
-              </RippleButton>
+              <LiquidMetalButton
+                type="submit"
+                className="w-full flex justify-center mt-6"
+                disabled={isLoggingIn}
+                metalConfig={{
+                  colorBack: "#00684a",
+                  colorTint: "#00ed64",
+                  speed: 0.5,
+                  repetition: 4,
+                  distortion: 0.15
+                }}
+              >
+                {isLoggingIn ? "Verificando..." : "Iniciar Sesión"}
+              </LiquidMetalButton>
             </form>
             
             <div className="login-footer">
@@ -616,7 +641,20 @@ export default function App() {
 
   return (
     <>
-      <Aurora />
+        <div className="fixed inset-0 z-[-1] pointer-events-none">
+          <FaultyTerminal 
+            tint="#00684a" 
+            brightness={1.0}
+            curvature={0.15}
+            scanlineIntensity={0.25}
+            flickerAmount={0.4}
+            glitchAmount={0.3}
+            noiseAmp={0.05}
+            chromaticAberration={2.0}
+            mouseReact={true}
+            mouseStrength={0.15}
+          />
+        </div>
 
       {/* Toasts overlay */}
       <div className="toast-container">
@@ -797,6 +835,18 @@ export default function App() {
                       <p>Top 5 productos ordenados por cantidad vendida.</p>
                     </div>
                     <div className="card-body">
+                      {dashboardStats.top_productos.length > 0 && (
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '16px' }}>
+                          <span className="text-sm text-muted">Vista rápida (Productos Top):</span>
+                          <ElasticStack 
+                            items={dashboardStats.top_productos.slice(0, 5).map(p => ({ id: p._id, name: p.nombre }))} 
+                            itemSize={44} 
+                            overlap={16} 
+                            pushForce={10}
+                            className="py-0"
+                          />
+                        </div>
+                      )}
                       <div className="table-container">
                         <table className="sleek-table">
                           <thead>
