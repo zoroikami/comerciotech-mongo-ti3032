@@ -960,7 +960,7 @@ export default function App() {
                               <td>{cli.email}</td>
                               <td>{cli.telefono}</td>
                               <td>
-                                <span className="text-sm text-secondary">
+                                <span className="text-sm" style={{ color: 'var(--text-primary)' }}>
                                   {`${cli.direccion.calle} N°${cli.direccion.numero}, ${cli.direccion.comuna}, ${cli.direccion.ciudad}`}
                                 </span>
                               </td>
