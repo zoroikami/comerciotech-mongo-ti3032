@@ -1052,7 +1052,7 @@ export default function App() {
                             <motion.tr key={prod.sku} variants={itemVariants}>
                               <td><span className="font-semibold text-muted">{prod.sku}</span></td>
                               <td><strong>{prod.nombre}</strong></td>
-                              <td><span className="text-sm text-secondary">{prod.descripcion || 'Sin descripción'}</span></td>
+                              <td><span className="text-sm" style={{ color: 'var(--text-primary)' }}>{prod.descripcion || 'Sin descripción'}</span></td>
                               <td><span className="role-badge role-vendedor">{prod.categoria}</span></td>
                               <td className="text-right font-semibold">${prod.precio.toLocaleString('es-CL')}</td>
                               <td className="text-right font-semibold">{prod.stock}</td>
