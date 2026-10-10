@@ -1,6 +1,6 @@
 # ComercioTech - CRUD Seguro en Python + PyMongo (NoSQL)
 
-Este proyecto implementa el sistema de base de datos NoSQL para **ComercioTech** (e-commerce), desarrollado como la entrega final para la asignatura **Bases de Datos No Estructuradas (TI3032)** de Ingeniería en Ciberseguridad, INACAP.
+Este proyecto implementa el sistema de base de datos NoSQL para **ComercioTech** (e-commerce), desarrollado como la entrega final para la asignatura Bases de Datos No Estructuradas.
 
 ---
 
